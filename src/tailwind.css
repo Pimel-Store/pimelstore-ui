@@ -14,6 +14,9 @@
   --principal-color: var(--color-digital-blue-100);
   --backgound-color: var(--color-black-100);
   --backgound-white: #fff;
+
+  --text-color:var(--color-black-950);
+
 }
 
 
@@ -22,5 +25,8 @@
   --principal-color: var(--color-black-800);
   --backgound-color: var(--color-black-900);
   --backgound-white: var(--color-black-950);
+
+  --text-color:var(--color-black-200);
+
 }
 
