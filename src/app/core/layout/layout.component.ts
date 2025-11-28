@@ -20,7 +20,7 @@ export class LayoutComponent {
    headerHeight = 0;
 
   ngAfterViewInit() {
-    this.headerHeight = this.headerEl.nativeElement.offsetHeight;
+    // this.headerHeight = this.headerEl.nativeElement.offsetHeight;
   }
 
 }
