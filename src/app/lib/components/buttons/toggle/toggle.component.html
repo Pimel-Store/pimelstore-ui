@@ -1,0 +1,8 @@
+<div class="theme-toggle">
+  <input [(ngModel)]="isActive" (change)="onToggle()" type="checkbox" id="toggle-theme" />
+  <label for="toggle-theme" class="toggle-label">
+    <span class="toggle-ball">
+      <mat-icon>{{ isActive() ? 'bedtime' : 'wb_sunny' }}</mat-icon>
+    </span>
+  </label>
+</div>

@@ -1,12 +1,19 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { ThemeService } from './core/services/theme-service/theme-service.service';
 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'meu-projeto';
+  title = 'Pimelstore UI';
+
+  constructor(private themeService: ThemeService) {}
+
+  toggleViewMode() {
+    this.themeService.toggleTheme();
+  }
 }

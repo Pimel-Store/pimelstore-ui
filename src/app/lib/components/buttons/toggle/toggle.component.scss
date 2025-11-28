@@ -1,0 +1,58 @@
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Esconde o checkbox real */
+.theme-toggle input[type="checkbox"] {
+  display: none;
+}
+
+/* A barra do toggle */
+.toggle-label {
+  display: block;
+  width: 80px;
+  height: 35px;
+  background: linear-gradient(to top, #87ceeb, #b0e0e6);
+  border-radius: 50px;
+  position: relative;
+  cursor: pointer;
+}
+
+/* O círculo que se move */
+.toggle-ball {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 31px;
+  height: 31px;
+  background-color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--warn-500);
+}
+
+/* Estado marcado (dark) */
+.theme-toggle input:checked + .toggle-label {
+  background: linear-gradient(to top, #0d1b2a, #1b263b);
+}
+
+.theme-toggle input:checked + .toggle-label .toggle-ball {
+  transform: translateX(45px); /* move o círculo para a direita */
+  background-color: var(--warn-500);
+  color: #0d1b2a;
+}
+
+// .theme-toggle input:checked + .toggle-label::before {
+//   // content: '⭐️⭐️';
+//   position: absolute;
+//   top: 3px;
+//   left: 5px;
+//   font-size: 10px;
+//   color: #fff;
+//   z-index: 1;
+//   pointer-events: none;
+// }

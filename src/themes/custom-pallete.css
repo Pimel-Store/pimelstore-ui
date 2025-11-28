@@ -1,0 +1,47 @@
+
+:root {
+  --color-digital-blue-50: #e5f0ff;
+  --color-digital-blue-100: #cce0ff;
+  --color-digital-blue-200: #99c2ff;
+  --color-digital-blue-300: #66a3ff;
+  --color-digital-blue-400: #3385ff;
+  --color-digital-blue-500: #0066ff;
+  --color-digital-blue-600: #0052cc;
+  --color-digital-blue-700: #003d99;
+  --color-digital-blue-800: #002966;
+  --color-digital-blue-900: #001433;
+  --color-digital-blue-950: #000e24;
+
+  --color-black-50: #F2F2F2;
+  --color-black-100: #E6E6E6;
+  --color-black-200: #CCCCCC;
+  --color-black-300: #B3B3B3;
+  --color-black-400: #999999;
+  --color-black-500: #808080;
+  --color-black-600: #666666;
+  --color-black-700: #4D4D4D;
+  --color-black-800: #333333;
+  --color-black-900: #1A1A1A;
+  --color-black-950: #121212;
+
+  --color-50:  var(--color-digital-blue-50);
+  --color-100: var(--color-digital-blue-100);
+  --color-200: var(--color-digital-blue-200);
+  --color-300: var(--color-digital-blue-300);
+  --color-400: var(--color-digital-blue-400);
+  --color-500: var(--color-digital-blue-500);
+  --color-600: var(--color-digital-blue-600);
+  --color-700: var(--color-digital-blue-700);
+  --color-800: var(--color-digital-blue-800);
+  --color-900: var(--color-digital-blue-900);
+  --color-950: var(--color-digital-blue-950);
+
+
+
+  --neutral-500: #efefef;
+
+  --success-500: #519872;
+  --warning-500: #BA5D00;
+  --error-500: #B10303;
+  --warn-500: #E1A100;
+}
