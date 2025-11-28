@@ -10,7 +10,8 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
         { path: '', redirectTo: 'home', pathMatch: 'full' },
-        // { path: 'home', loadChildren: () => import('./features/home/home.routes')},
+        { path: 'home', loadChildren: () => import('./features/home/home.routes')},
+        { path: 'sales', loadChildren: () => import('./features/sales/sales.routes')},
     ]
   },
   // { path: 'forgot-password', loadChildren: () => import('./features/auth/forgot-password/forgot-password.routes')},

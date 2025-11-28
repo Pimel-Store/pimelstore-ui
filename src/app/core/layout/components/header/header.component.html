@@ -1,11 +1,13 @@
-<aside class="bg-white h-[80px] w-full shadow-sm flex items-center justify-between px-4">
-  <div>
-    <h1 class="text-2xl font-bold text-white">NAV</h1>
+<nav class="h-[80px] mx-auto flex items-center justify-center">
+  <div class="flex items-center justify-between w-[98%] h-[70px] px-4 bg-white shadow-sm rounded-lg">
+    <div>
+      <h1 class="text-2xl font-bold text-white">NAV</h1>
+    </div>
+    <div class="flex justify-end items-center h-[70px]">
+      <C-toggle
+        [isActive]="isDarkModeActive"
+        [onClick]="toggleTheme.bind(this)">
+      </C-toggle>
+    </div>
   </div>
-  <div class="flex justify-end items-center h-full">
-    <C-toggle
-      [isActive]="isDarkModeActive"
-      [onClick]="toggleTheme.bind(this)">
-    </C-toggle>
-  </div>
-</aside>
+</nav>
