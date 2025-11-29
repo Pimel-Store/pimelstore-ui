@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component } from '@angular/core'
+import { environment } from '../../../environments/environment';
+import { AuthService } from '../../core/auth/auth-service/auth-service.service';
 
 @Component({
   selector: 'app-layout',
@@ -7,5 +9,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
+
+  constructor(
+
+  ) {}
+
+  ngOnInit(): void {
+
+  }
 
 }
