@@ -1,18 +1,34 @@
-<div class="bg-principal p-4 rounded-md w-[300px] shadow-md">
+<div class="bg-principal p-4 rounded-lg w-[300px] shadow-lg">
   <div class="flex flex-col">
     <div class="flex-1">
       <h2 class="text-2xl font-bold mb-4 text-primary">Login</h2>
-      <C-input-text
-        placeholder="Email"
-        type="email"
-        (valueChange)="onEmailChange($event)"
-      ></C-input-text>
-      <C-input-text
-        placeholder="Senha"
-        type="password"
-        (valueChange)="onPasswordChange($event)"
-      ></C-input-text>
-      <C-button (click)="onSubmitClick($event)">Entrar</C-button>
+      <form [formGroup]="_form" (ngSubmit)="onSubmitClick()">
+
+        <C-input-text
+          placeholder="Email"
+          type="email"
+          formControlName="email">
+          <div *ngIf="this._form.get('email')?.touched && this._form.get('email')?.invalid" class="text-red-500 text-sm">
+            <span *ngIf="this._form.get('email')?.errors?.['required']">O e-mail é obrigatório.</span>
+            <span *ngIf="this._form.get('email')?.errors?.['email']">Formato de e-mail inválido.</span>
+          </div>
+        </C-input-text>
+
+        <C-input-text
+          placeholder="Senha"
+          type="password"
+          formControlName="password">
+          <div *ngIf="this._form.get('password')?.touched && this._form.get('password')?.invalid" class="text-red-500 text-sm">
+            <span *ngIf="this._form.get('password')?.errors?.['required']">A senha é obrigatória.</span>
+            <span *ngIf="this._form.get('password')?.errors?.['passwordError']">
+              <span [appFloatingTooltip]="getTooltipText()" class="material-icons text-[var(--alert-color)] mt-2 cursor-pointer">warning</span>
+            </span>
+          </div>
+        </C-input-text>
+
+        <C-button>Entrar</C-button>
+
+      </form>
     </div>
     <div class="flex-1 flex items-center justify-center">
       <img src="./cores.png" alt="Login Illustration" class="w-[400px] "/>

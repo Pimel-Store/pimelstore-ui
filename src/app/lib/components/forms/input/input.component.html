@@ -1,7 +1,12 @@
-<input
-  class="text-primary w-full p-2 border border-principal rounded-md bg-white mb-2 focus:focus-primary outline-primary"
-  (input)="onValueChange($event)"
-  [type]="type"
-  [placeholder]="placeholder"
-  [value]="value"
-/>
+
+<div class="w-full mb-2">
+  <input
+    class="text-primary w-full p-2 border border-principal rounded-md bg-white focus:focus-primary outline-primary"
+    [type]="type"
+    [placeholder]="placeholder"
+    [value]="value"
+    (input)="handleInput($event)"
+    (blur)="onTouched()"
+  />
+  <ng-content></ng-content>
+</div>

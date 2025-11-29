@@ -36,6 +36,18 @@
   --color-orange-900: #B83700;
   --color-orange-950: #A33100;
 
+  --color-yellow-50: #ffe169;
+  --color-yellow-100: #fad643;
+  --color-yellow-200: #edc531;
+  --color-yellow-300: #dbb42c;
+  --color-yellow-400: #c9a227;
+  --color-yellow-500: #B69121;
+  --color-yellow-600: #A47E1B;
+  --color-yellow-700: #926C15;
+  --color-yellow-800: #805B10;
+  --color-yellow-900: #76520E;
+  --color-yellow-950: #5C3E0A;
+
   --color-50:  var(--color-digital-blue-50);
   --color-100: var(--color-digital-blue-100);
   --color-200: var(--color-digital-blue-200);

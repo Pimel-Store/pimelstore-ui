@@ -15,6 +15,8 @@
   --backgound-color: var(--color-black-100);
   --backgound-white: #fff;
 
+  --alert-color: var(--color-yellow-100);
+
   --text-color:var(--color-black-950);
 
   --border-color: var(--color-black-100);
@@ -26,6 +28,7 @@
   --button-text-color: var(--color-black-100);
   --button-hover: var(--color-orange-500);
 
+
 }
 
 
@@ -34,6 +37,8 @@
   --principal-color: var(--color-black-800);
   --backgound-color: var(--color-black-900);
   --backgound-white: var(--color-black-950);
+
+  --alert-color: var(--color-yellow-400);
 
   --text-color:var(--color-black-200);
 

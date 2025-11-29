@@ -23,6 +23,10 @@ body{
   background-color: var(--principal-color);
 }
 
+.bg-alert {
+  background-color: var(--alert-color);
+}
+
 .bg-white{
   background-color: var(--backgound-white);
 }
@@ -58,3 +62,63 @@ body{
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+
+
+.floating-tooltip {
+  position: fixed;
+  max-width: 300px;
+  background: var(--principal-color);
+  color: var(--text-color);
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 5px;
+  white-space: pre-line;
+  z-index: 9999;
+  pointer-events: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  transition: opacity 0.15s ease;
+}
+
+
+.tooltip-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+/* seta para cada posição */
+.tooltip-top .tooltip-arrow {
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px 5px 0 5px;
+  border-color: var(--principal-color) transparent transparent transparent;
+}
+
+.tooltip-bottom .tooltip-arrow {
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 0 5px 5px 5px;
+  border-color: transparent transparent var(--principal-color) transparent;
+}
+
+.tooltip-left .tooltip-arrow {
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 5px 0 5px 5px;
+  border-color: transparent transparent transparent var(--principal-color);
+}
+
+.tooltip-right .tooltip-arrow {
+  left: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 5px 5px 5px 0;
+  border-color: transparent var(--principal-color) transparent transparent;
+}
+

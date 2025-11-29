@@ -10,11 +10,22 @@ import { firstValueFrom } from 'rxjs';
 })
 export class AuthService {
     http = inject(HttpClient);
-    private storageKey = 'user-data-info';
     private env = environment;
 
-    constructor() {
+    baseUrl: string;
+    themeKey = 'user-data';
 
+    key:string;
+
+    constructor() {
+      this.baseUrl = window.location.origin;
+      this.key = this.mountKey();
+    }
+
+    mountKey(){
+      const base = this.baseUrl;
+      const key = this.themeKey;
+      return `${base}:${key}`;
     }
 
     async login({email,password}: User): Promise<ApiResponse<User>> {
@@ -33,11 +44,11 @@ export class AuthService {
     }
 
     async setUserData(userData: User): Promise<void> {
-        localStorage.setItem(this.storageKey, JSON.stringify(userData) || '');
+        localStorage.setItem(this.key, JSON.stringify(userData) || '');
     }
 
     async getUserData(): Promise<User | null> {
-        const data = localStorage.getItem(this.storageKey);
+        const data = localStorage.getItem(this.key);
         if (data) {
             return JSON.parse(data) as User;
         }
@@ -46,7 +57,7 @@ export class AuthService {
 
     async isLoggedIn(): Promise<boolean> {
       try{
-          const data = localStorage.getItem(this.storageKey);
+          const data = localStorage.getItem(this.key);
           if (!data) {
               return false;
           }
