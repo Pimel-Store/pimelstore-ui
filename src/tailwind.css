@@ -4,18 +4,14 @@
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
-* {
-  font-family: "Mulish", sans-serif;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
 :root {
   --principal-color: var(--color-digital-blue-100);
   --backgound-color: var(--color-black-100);
   --backgound-white: #fff;
 
-  --alert-color: var(--color-yellow-100);
+  --danger-color: var(--color-yellow-200);
+  --error-color: var(--color-red-50);
+  --success-color: var(--color-green-400);
 
   --text-color:var(--color-black-950);
 
@@ -31,14 +27,14 @@
 
 }
 
-
-
 [data-theme="dark"] {
   --principal-color: var(--color-black-800);
   --backgound-color: var(--color-black-900);
   --backgound-white: var(--color-black-950);
 
-  --alert-color: var(--color-yellow-400);
+  --danger-color: var(--color-yellow-700);
+  --error-color: var(--color-red-700);
+  --success-color: var(--color-green-700);
 
   --text-color:var(--color-black-200);
 

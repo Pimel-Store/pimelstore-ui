@@ -32,7 +32,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--warn-500);
+  color: var(--danger-color);
 }
 
 /* Estado marcado (dark) */
@@ -42,8 +42,8 @@
 
 .theme-toggle input:checked + .toggle-label .toggle-ball {
   transform: translateX(45px); /* move o círculo para a direita */
-  background-color: var(--warn-500);
-  color: #0d1b2a;
+  background-color: #0d1b2a;
+  color: var(--danger-color);
 }
 
 // .theme-toggle input:checked + .toggle-label::before {

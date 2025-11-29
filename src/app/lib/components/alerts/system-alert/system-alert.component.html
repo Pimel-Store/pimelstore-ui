@@ -1,0 +1,23 @@
+
+<section class="flex items-center justify-center fixed top-2 right-0 h-20 w-full z-50" *ngIf="alertService.alert()">
+  <div class="rounded-md shadow-md h-full w-[320px] text-[white] flex flex-col"
+  [class.bg-success]="alertService.alert()?.type === 'success'"
+  [class.bg-error]="alertService.alert()?.type === 'error'"
+  [class.bg-danger]="alertService.alert()?.type === 'danger'">
+    <div class="px-4 flex items-center flex-1">
+      <div class="flex items-center justify-center mr-2">
+        <span class="material-icons">info</span>
+      </div>
+      <div class="flex-1 flex items-center justify-center font-bold text-left px-2 text-sm">
+        {{ alertService.alert()?.message }}
+      </div>
+      <div class="flex items-center justify-center">
+        <span (click)="onCloseClick()" class="material-icons cursor-pointer">close</span>
+      </div>
+    </div>
+    <div class="bg-blue-500 h-1 origin-right"
+       [style.transform]="'scaleX(' + (progress()/100) + ')'"
+       style="transition: transform 0.1s linear;">
+    </div>
+  </div>
+</section>

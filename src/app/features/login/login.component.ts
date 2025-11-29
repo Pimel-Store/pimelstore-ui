@@ -8,6 +8,7 @@ import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validator
 import { CommonModule } from '@angular/common';
 import { passwordValidator } from '../../lib/validators/password.validator';
 import { FloatingTooltipDirective } from '../../lib/components/directives/floating-tooltip/floating-tooltip.directive';
+import { AlertService } from '../../lib/components/alerts/system-alert/system-alert.service';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,7 @@ import { FloatingTooltipDirective } from '../../lib/components/directives/floati
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-
+  alertService = inject(AlertService);
   private fb = inject(FormBuilder);
   _form!: FormGroup;
 
@@ -37,9 +38,9 @@ export class LoginComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    // if (await this.authService.isLoggedIn()) {
-    //   this.router.navigate(['/home']);
-    // }
+    if (await this.authService.isLoggedIn()) {
+      this.router.navigate(['/home']);
+    }
 
     this._form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -58,6 +59,7 @@ export class LoginComponent implements OnInit {
     try {
       const response = await this.authService.login(data);
       if (response.data) {
+        this.alertService.show('Login successful!', 'success');
         this.router.navigate(['/home']);
       }
     } catch (error: any) {

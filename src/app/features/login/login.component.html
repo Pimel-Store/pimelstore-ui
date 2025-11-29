@@ -21,7 +21,7 @@
           <div *ngIf="this._form.get('password')?.touched && this._form.get('password')?.invalid" class="text-red-500 text-sm">
             <span *ngIf="this._form.get('password')?.errors?.['required']">A senha é obrigatória.</span>
             <span *ngIf="this._form.get('password')?.errors?.['passwordError']">
-              <span [appFloatingTooltip]="getTooltipText()" class="material-icons text-[var(--alert-color)] mt-2 cursor-pointer">warning</span>
+              <span [appFloatingTooltip]="getTooltipText()" class="material-icons text-[var(--danger-color)] mt-2 cursor-pointer">warning</span>
             </span>
           </div>
         </C-input-text>

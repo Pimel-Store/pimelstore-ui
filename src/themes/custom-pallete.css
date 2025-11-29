@@ -48,6 +48,30 @@
   --color-yellow-900: #76520E;
   --color-yellow-950: #5C3E0A;
 
+  --color-red-50: #E01E37;
+  --color-red-100: #DA1E37;
+  --color-red-200: #C71F37;
+  --color-red-300: #BD1F36;
+  --color-red-400: #B21E35;
+  --color-red-500: #A71E34;
+  --color-red-600: #A11D33;
+  --color-red-700: #A11D33;
+  --color-red-800: #6E1423;
+  --color-red-900: #641220;
+  --colore-red-950: #4D0F1A;
+
+  --color-green-50: #B7EFC5;
+  --color-green-100: #92E6A7;
+  --color-green-200: #6EDE8A;
+  --color-green-300: #4AD66D;
+  --color-green-400: #2DC653;
+  --color-green-500: #25A244;
+  --color-green-600: #208B3A;
+  --color-green-700: #1A7431;
+  --color-green-800: #155D27;
+  --color-green-900: #10451D;
+  --color-green-950: #0C3314;
+
   --color-50:  var(--color-digital-blue-50);
   --color-100: var(--color-digital-blue-100);
   --color-200: var(--color-digital-blue-200);
@@ -64,8 +88,4 @@
 
   --neutral-500: #efefef;
 
-  --success-500: #519872;
-  --warning-500: #BA5D00;
-  --error-500: #B10303;
-  --warn-500: #E1A100;
 }
