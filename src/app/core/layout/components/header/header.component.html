@@ -6,7 +6,7 @@
     <div class="flex justify-end items-center h-[70px]">
       <C-toggle
         [isActive]="isDarkModeActive"
-        [onClick]="toggleTheme.bind(this)">
+        (valueChange)="onToggle($event)">
       </C-toggle>
     </div>
   </div>

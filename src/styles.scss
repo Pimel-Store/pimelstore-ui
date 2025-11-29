@@ -34,6 +34,27 @@ body{
 .hover\:bg-primary:hover {
   background-color: var(--principal-color);
 }
+.hover\:bg-secondary:hover {
+  background-color: var(--button-hover);
+  color: #fff;
+}
+
+.focus\:focus-primary:focus {
+  background-color: var(--principal-color);
+}
+
+.border-principal{
+  border-color: var(--border-color);
+}
+
+.button-primary{
+  background-color: var(--button-primary);
+  color: var(--button-text-color);
+}
+
+.outline-primary{
+  outline-color: var(--button-primary);
+}
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

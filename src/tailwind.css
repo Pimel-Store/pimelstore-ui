@@ -17,6 +17,15 @@
 
   --text-color:var(--color-black-950);
 
+  --border-color: var(--color-black-100);
+
+
+  --focus-color: var(--color-black-100);
+
+  --button-primary: var(--color-orange-400);
+  --button-text-color: var(--color-black-100);
+  --button-hover: var(--color-orange-500);
+
 }
 
 
@@ -27,6 +36,14 @@
   --backgound-white: var(--color-black-950);
 
   --text-color:var(--color-black-200);
+
+  --border-color: var(--color-black-500);
+
+  --focus-color: var(--color-black-100);
+
+  --button-primary: var(--color-orange-900);
+  --button-text-color: var(--color-black-100);
+  --button-hover: var(--color-orange-800);
 
 }
 

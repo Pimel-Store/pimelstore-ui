@@ -18,7 +18,8 @@ export class HeaderComponent {
     this.isDarkModeActive.set(this.isDarkMode());
   }
 
-  toggleTheme() {
+  onToggle($event: boolean){
+    console.log('Toggle changed:', $event);
       this.themeService.toggleTheme();
       this.isDarkModeActive.set(this.themeService.isDarkMode());
   }

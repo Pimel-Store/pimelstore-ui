@@ -14,16 +14,16 @@ export class ToggleComponent {
   @Input() isActive!: Signal<boolean>;
   @Input() onClick?: () => void;
 
+  @Output() valueChange = new EventEmitter<boolean>();
+
   constructor() {
     effect(() => {
 
     });
   }
 
-  onToggle() {
-    if (this.onClick) {
-      this.onClick();
-    }
+  onToggle($event: any) {
+    this.valueChange.emit($event.target.checked);
   }
 
 }

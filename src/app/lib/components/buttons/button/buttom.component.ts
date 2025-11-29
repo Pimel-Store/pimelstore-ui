@@ -1,14 +1,17 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'app-button',
-  imports: [RouterOutlet],
+  selector: 'C-button',
+  imports: [],
   templateUrl: './button.component.html',
   styleUrls: ['./button.component.scss']
 })
 export class ButtonComponent {
-
+  valueChange = new EventEmitter<string>();
   constructor() {}
+
+  onClick(event: any) {
+    this.valueChange.emit('clicked');
+  }
 
 }
