@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { passwordValidator } from '../../lib/validators/password.validator';
 import { FloatingTooltipDirective } from '../../lib/components/directives/floating-tooltip/floating-tooltip.directive';
 import { AlertService } from '../../lib/components/alerts/system-alert/system-alert.service';
+import { LoadService } from '../../lib/components/load/system-load/system-load.service';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +25,7 @@ import { AlertService } from '../../lib/components/alerts/system-alert/system-al
 })
 export class LoginComponent implements OnInit {
   alertService = inject(AlertService);
-  private fb = inject(FormBuilder);
+  loadService = inject(LoadService);
   _form!: FormGroup;
 
   // Getter conveniente
@@ -34,18 +35,19 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private fb: FormBuilder
+  ) {
+     this._form = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, passwordValidator()]]
+    });
+  }
 
   async ngOnInit(): Promise<void> {
     if (await this.authService.isLoggedIn()) {
       this.router.navigate(['/home']);
     }
-
-    this._form = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, passwordValidator()]]
-    });
   }
 
   async onSubmitClick() {
@@ -53,7 +55,7 @@ export class LoginComponent implements OnInit {
       this._form.markAllAsTouched();
       return;
     }
-
+    this.loadService.show();
     const data: User = this._form.value;
 
     try {
@@ -64,7 +66,9 @@ export class LoginComponent implements OnInit {
       }
     } catch (error: any) {
       const message = error.error?.message || 'An error occurred during login.';
-      alert(message);
+      this.alertService.show(message, 'error');
+    } finally {
+      this.loadService.hide();
     }
   }
 

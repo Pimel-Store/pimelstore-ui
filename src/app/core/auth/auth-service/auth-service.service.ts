@@ -68,7 +68,9 @@ export class AuthService {
           }
           return !!user.token;
         } catch (error: any) {
-          alert('Error checking login status: ' + error.error.message);
+          if (error.status === 401) {
+              return false;
+          }
           return false;
         }
     }

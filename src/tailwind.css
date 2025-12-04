@@ -24,6 +24,8 @@
   --button-text-color: var(--color-black-100);
   --button-hover: var(--color-orange-500);
 
+  --bg-loading: var(--color-black-950);
+
 
 }
 
