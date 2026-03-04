@@ -1,16 +1,18 @@
-import { Component } from '@angular/core';
-import { MenuItem } from './aside-menu.interfaces';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { CommonModule } from '@angular/common';
+import { MenuItem } from './aside-menu.interfaces';
 
 @Component({
   selector: 'app-aside-menu',
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule],
   templateUrl: './aside-menu.component.html',
   styleUrls: ['./aside-menu.component.scss']
 })
 export class AsideMenuComponent {
+  private router = inject(Router);
+  private destroyRef = inject(DestroyRef);
 
   currentRoute = '';
 
@@ -19,13 +21,14 @@ export class AsideMenuComponent {
     { label: 'Vendas', route: 'sales', icon: 'shopping_cart' }
   ];
 
-  constructor(private router: Router) {}
-
   ngOnInit(): void {
     this.currentRoute = this.router.url;
 
     this.router.events
-      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+      .pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+        takeUntilDestroyed(this.destroyRef)
+      )
       .subscribe(event => {
         this.currentRoute = event.urlAfterRedirects;
       });

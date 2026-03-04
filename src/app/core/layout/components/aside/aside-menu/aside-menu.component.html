@@ -1,8 +1,12 @@
-<div class="">
-  <li class="w-full flex flex-col gap-3">
-    <a *ngFor="let item of menuItems" [routerLink]="item.route" [class.bg-primary]="'/' + item.route === currentRoute" class="flex items-center w-full rounded-lg hover:bg-primary text-primary px-4 py-3 gap-2">
-      <span class="material-icons">{{ item.icon }}</span>
-      <span class="font-medium">{{ item.label }}</span>
-    </a>
-  </li>
-</div>
+<nav>
+  <ul class="flex flex-col gap-3">
+    @for (item of menuItems; track item.route) {
+      <li class="w-full">
+        <a [routerLink]="item.route" [class.bg-primary]="'/' + item.route === currentRoute" class="flex items-center w-full rounded-lg hover:bg-primary text-primary px-4 py-3 gap-2">
+          <span class="material-icons" aria-hidden="true">{{ item.icon }}</span>
+          <span class="font-medium">{{ item.label }}</span>
+        </a>
+      </li>
+    }
+  </ul>
+</nav>

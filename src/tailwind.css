@@ -6,8 +6,8 @@
 
 :root {
   --principal-color: var(--color-digital-blue-100);
-  --backgound-color: var(--color-black-100);
-  --backgound-white: #fff;
+  --background-color: var(--color-black-100);
+  --background-white: #fff;
 
   --danger-color: var(--color-yellow-200);
   --error-color: var(--color-red-50);
@@ -31,8 +31,8 @@
 
 [data-theme="dark"] {
   --principal-color: var(--color-black-800);
-  --backgound-color: var(--color-black-900);
-  --backgound-white: var(--color-black-950);
+  --background-color: var(--color-black-900);
+  --background-white: var(--color-black-950);
 
   --danger-color: var(--color-yellow-700);
   --error-color: var(--color-red-700);

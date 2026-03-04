@@ -1,1 +1,140 @@
-Home
+<div class="p-6 flex flex-col gap-6">
+
+  <!-- Cabeçalho + Seletor de Ano -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h2 class="text-2xl font-bold text-primary">Dashboard</h2>
+      <p class="text-sm text-primary opacity-50 mt-0.5">Visão geral de {{ selectedYear() }}</p>
+    </div>
+    <select
+      [value]="selectedYear()"
+      (change)="onYearSelect($event)"
+      class="px-3 py-2 border border-principal rounded-lg text-primary bg-white text-sm outline-none focus:ring-2 focus:ring-[var(--button-primary)] cursor-pointer">
+      @for (year of yearOptions; track year) {
+        <option [value]="year">{{ year }}</option>
+      }
+    </select>
+  </div>
+
+  @if (dashboard()) {
+
+    <!-- Cards KPI Anuais -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+      <div class="bg-white rounded-xl shadow p-5 flex flex-col gap-2">
+        <div class="flex items-center justify-between">
+          <span class="text-sm font-medium text-primary opacity-60">Total de Vendas</span>
+          <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center">
+            <span class="material-icons text-base text-primary" aria-hidden="true">shopping_cart</span>
+          </div>
+        </div>
+        <p class="text-4xl font-bold text-primary">{{ dashboard()!.annual.totalItems }}</p>
+        <p class="text-xs text-primary opacity-40">transações registradas</p>
+      </div>
+
+      <div class="bg-white rounded-xl shadow p-5 flex flex-col gap-2">
+        <div class="flex items-center justify-between">
+          <span class="text-sm font-medium text-primary opacity-60">Receita Total</span>
+          <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center">
+            <span class="material-icons text-base text-primary" aria-hidden="true">attach_money</span>
+          </div>
+        </div>
+        <p class="text-4xl font-bold text-[var(--success-color)]">{{ formatCurrency(dashboard()!.annual.totalValue) }}</p>
+        <p class="text-xs text-primary opacity-40">faturado no ano</p>
+      </div>
+
+    </div>
+
+    <!-- Gráfico de Receita Mensal -->
+    <div class="bg-white rounded-xl shadow p-5">
+      <div class="flex items-center justify-between mb-5">
+        <h3 class="text-sm font-semibold text-primary uppercase tracking-wider opacity-60">Receita Mensal</h3>
+        <span class="text-xs text-primary opacity-40">{{ selectedYear() }}</span>
+      </div>
+
+      <!-- Gráfico de Barras -->
+      <div class="flex items-end gap-1.5 h-44 w-full">
+        @for (month of monthList; track month.month) {
+          <div class="flex-1 flex flex-col items-center h-full justify-end gap-1 group relative">
+            <!-- Tooltip ao passar o mouse -->
+            @if (month.totalItems > 0) {
+              <div class="absolute bottom-full mb-2 hidden group-hover:flex flex-col items-center z-10 pointer-events-none">
+                <div class="bg-[var(--bg-loading)] text-white text-xs rounded-lg px-2 py-1.5 whitespace-nowrap shadow-lg">
+                  <p class="font-semibold">{{ MONTH_NAMES[month.month - 1] }}</p>
+                  <p>{{ month.totalItems }} vendas</p>
+                  <p>{{ formatCurrency(month.totalValue) }}</p>
+                </div>
+                <div class="w-2 h-2 bg-[var(--bg-loading)] rotate-45 -mt-1"></div>
+              </div>
+            }
+            <!-- Barra -->
+            <div
+              class="w-full rounded-t transition-all duration-300 min-h-[2px]"
+              [class.bg-[var(--button-primary)]]="month.totalItems > 0"
+              [class.bg-primary]="month.totalItems === 0"
+              [style.height.%]="barHeight(month)">
+            </div>
+            <!-- Rótulo do mês -->
+            <span class="text-xs text-primary opacity-50">{{ MONTH_NAMES[month.month - 1] }}</span>
+          </div>
+        }
+      </div>
+
+      <!-- Legenda: apenas meses com dados -->
+      @if (dashboard()!.annual.totalItems > 0) {
+        <div class="mt-4 pt-4 border-t border-principal flex flex-wrap gap-x-6 gap-y-2">
+          @for (month of monthList; track month.month) {
+            @if (month.totalItems > 0) {
+              <div class="flex items-center gap-2">
+                <div class="w-2.5 h-2.5 rounded-sm bg-[var(--button-primary)]"></div>
+                <span class="text-xs text-primary opacity-70">
+                  {{ MONTH_NAMES[month.month - 1] }} · {{ month.totalItems }} · {{ formatCurrency(month.totalValue) }}
+                </span>
+              </div>
+            }
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Atividade Diária Recente -->
+    @if (recentDays.length > 0) {
+      <div class="bg-white rounded-xl shadow p-5">
+        <h3 class="text-sm font-semibold text-primary uppercase tracking-wider opacity-60 mb-4">Atividade Diária Recente</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-principal">
+                <th class="text-left pb-3 font-semibold text-primary opacity-60">Data</th>
+                <th class="text-right pb-3 font-semibold text-primary opacity-60">Vendas</th>
+                <th class="text-right pb-3 font-semibold text-primary opacity-60">Receita</th>
+                <th class="text-right pb-3 font-semibold text-primary opacity-60">Ticket Médio</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (day of recentDays; track day.day + '-' + day.month + '-' + day.year) {
+                <tr class="border-b border-principal last:border-0 hover:bg-primary transition-colors">
+                  <td class="py-3 text-primary font-medium">{{ formatDayDate(day) }}</td>
+                  <td class="py-3 text-right text-primary opacity-80">{{ day.totalItems }}</td>
+                  <td class="py-3 text-right font-semibold text-[var(--success-color)]">{{ formatCurrency(day.totalValue) }}</td>
+                  <td class="py-3 text-right text-primary opacity-60">{{ formatCurrency(day.totalValue / day.totalItems) }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+  } @else {
+
+    <!-- Estado Vazio -->
+    <div class="bg-white rounded-xl shadow p-12 flex flex-col items-center gap-3 text-center">
+      <span class="material-icons text-5xl text-primary opacity-20" aria-hidden="true">bar_chart</span>
+      <p class="text-primary opacity-40 font-medium">Sem dados de vendas para {{ selectedYear() }}</p>
+      <p class="text-sm text-primary opacity-30">As vendas registradas neste ano aparecerão aqui.</p>
+    </div>
+
+  }
+
+</div>

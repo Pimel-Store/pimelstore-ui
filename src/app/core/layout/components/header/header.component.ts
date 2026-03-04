@@ -1,30 +1,33 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../auth/auth-service/auth-service.service';
 import { ThemeService } from '../../../services/theme-service/theme-service.service';
 import { ToggleComponent } from '../../../../lib/components/buttons/toggle/toggle.component';
 
 @Component({
   selector: 'app-header',
-  imports: [
-    ToggleComponent
-  ],
+  imports: [ToggleComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-  isDarkModeActive = signal<boolean>(true);
-  constructor(private themeService: ThemeService) {}
+  private themeService = inject(ThemeService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
+  isDarkModeActive = signal<boolean>(false);
 
   ngOnInit() {
-    this.isDarkModeActive.set(this.isDarkMode());
+    this.isDarkModeActive.set(this.themeService.isDarkMode());
   }
 
-  onToggle($event: boolean){
-      this.themeService.toggleTheme();
-      this.isDarkModeActive.set(this.themeService.isDarkMode());
+  onToggle(isActive: boolean) {
+    this.themeService.toggleTheme();
+    this.isDarkModeActive.set(this.themeService.isDarkMode());
   }
 
-  isDarkMode(): boolean {
-      return this.themeService.isDarkMode();
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
-
 }

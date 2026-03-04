@@ -1,29 +1,19 @@
-import { Component, Input, effect, Signal, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'C-toggle',
+  selector: 'app-toggle',
   standalone: true,
-  imports: [FormsModule, MatIconModule],
+  imports: [MatIconModule],
   templateUrl: './toggle.component.html',
   styleUrls: ['./toggle.component.scss']
 })
 export class ToggleComponent {
-  // Recebe o valor externo
   @Input() isActive!: Signal<boolean>;
-  @Input() onClick?: () => void;
 
   @Output() valueChange = new EventEmitter<boolean>();
 
-  constructor() {
-    effect(() => {
-
-    });
+  onToggle(event: Event) {
+    this.valueChange.emit((event.target as HTMLInputElement).checked);
   }
-
-  onToggle($event: any) {
-    this.valueChange.emit($event.target.checked);
-  }
-
 }

@@ -4,29 +4,41 @@
       <h2 class="text-2xl font-bold mb-4 text-primary">Login</h2>
       <form [formGroup]="_form" (ngSubmit)="onSubmitClick()">
 
-        <C-input-text
+        <app-input-text
           placeholder="Email"
           type="email"
           formControlName="email">
-          <div *ngIf="this._form.get('email')?.touched && this._form.get('email')?.invalid" class="text-red-500 text-sm">
-            <span *ngIf="this._form.get('email')?.errors?.['required']">O e-mail é obrigatório.</span>
-            <span *ngIf="this._form.get('email')?.errors?.['email']">Formato de e-mail inválido.</span>
-          </div>
-        </C-input-text>
+          @if (_form.get('email')?.touched && _form.get('email')?.invalid) {
+            <div class="text-red-500 text-sm">
+              @if (_form.get('email')?.errors?.['required']) {
+                <span>O e-mail é obrigatório.</span>
+              }
+              @if (_form.get('email')?.errors?.['email']) {
+                <span>Formato de e-mail inválido.</span>
+              }
+            </div>
+          }
+        </app-input-text>
 
-        <C-input-text
+        <app-input-text
           placeholder="Senha"
           type="password"
           formControlName="password">
-          <div *ngIf="this._form.get('password')?.touched && this._form.get('password')?.invalid" class="text-red-500 text-sm">
-            <span *ngIf="this._form.get('password')?.errors?.['required']">A senha é obrigatória.</span>
-            <span *ngIf="this._form.get('password')?.errors?.['passwordError']">
-              <span [appFloatingTooltip]="getTooltipText()" class="material-icons text-(--danger-color) mt-2 cursor-pointer">warning</span>
-            </span>
-          </div>
-        </C-input-text>
+          @if (_form.get('password')?.touched && _form.get('password')?.invalid) {
+            <div class="text-red-500 text-sm">
+              @if (_form.get('password')?.errors?.['required']) {
+                <span>A senha é obrigatória.</span>
+              }
+              @if (_form.get('password')?.errors?.['passwordError']) {
+                <span>
+                  <span [appFloatingTooltip]="getTooltipText()" class="material-icons text-(--danger-color) mt-2 cursor-pointer">warning</span>
+                </span>
+              }
+            </div>
+          }
+        </app-input-text>
 
-        <C-button>Entrar</C-button>
+        <app-button type="submit">Entrar</app-button>
 
       </form>
     </div>

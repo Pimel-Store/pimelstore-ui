@@ -1,23 +1,27 @@
-import { AuthService } from './auth-service.service';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
-import { Observable, from, switchMap } from 'rxjs';
+import { Observable } from 'rxjs';
+import { AuthService } from './auth-service.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService) {}
+  private authService = inject(AuthService);
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return from(this.authService.getUserData()).pipe(
-      switchMap(user => {
-        const token = user?.token ?? '';
-        const authReq = req.clone({
-          setHeaders: {
-            Authorization: token ? `Bearer ${token}` : '',
-          }
-        });
-        return next.handle(authReq);
-      })
-    );
+    if (req.url.includes('/login')) {
+      return next.handle(req);
+    }
+
+    const user = this.authService.getUserData();
+    const token = user?.token;
+
+    if (!token) {
+      return next.handle(req);
+    }
+
+    const authReq = req.clone({
+      setHeaders: { Authorization: `Bearer ${token}` }
+    });
+    return next.handle(authReq);
   }
 }

@@ -23,7 +23,7 @@ body {
   transition: all 0.3s ease;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--backgound-color) ;
+  background-color: var(--background-color);
 }
 
 .bg-primary {
@@ -43,7 +43,7 @@ body {
 }
 
 .bg-white{
-  background-color: var(--backgound-white);
+  background-color: var(--background-white);
 }
 
 .text-primary {

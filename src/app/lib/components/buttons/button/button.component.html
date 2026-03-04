@@ -1,5 +1,7 @@
 <button
   class="button-primary text-white px-4 py-2 rounded hover:bg-secondary cursor-pointer"
-  (click)="onClick($event)"
+  [type]="type"
+  [disabled]="disabled"
+  (click)="clicked.emit()"
   ><ng-content></ng-content>
 </button>

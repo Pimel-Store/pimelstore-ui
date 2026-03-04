@@ -1,11 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { InputTextComponent } from '../../lib/components/forms/input/input.component';
-import { ButtonComponent } from '../../lib/components/buttons/button/buttom.component';
+import { ButtonComponent } from '../../lib/components/buttons/button/button.component';
 import { AuthService } from '../../core/auth/auth-service/auth-service.service';
 import { User } from '../../core/interfaces/user';
 import { Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 import { passwordValidator } from '../../lib/validators/password.validator';
 import { FloatingTooltipDirective } from '../../lib/components/directives/floating-tooltip/floating-tooltip.directive';
 import { AlertService } from '../../lib/components/alerts/system-alert/system-alert.service';
@@ -17,7 +16,6 @@ import { LoadService } from '../../lib/components/load/system-load/system-load.s
     InputTextComponent,
     ButtonComponent,
     ReactiveFormsModule,
-    CommonModule,
     FloatingTooltipDirective
   ],
   templateUrl: './login.component.html',
@@ -28,7 +26,6 @@ export class LoginComponent implements OnInit {
   loadService = inject(LoadService);
   _form!: FormGroup;
 
-  // Getter conveniente
   get fc(): Record<string, AbstractControl> {
     return this._form.controls;
   }
@@ -38,7 +35,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder
   ) {
-     this._form = this.fb.group({
+    this._form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, passwordValidator()]]
     });
@@ -61,11 +58,11 @@ export class LoginComponent implements OnInit {
     try {
       const response = await this.authService.login(data);
       if (response.data) {
-        this.alertService.show('Login successful!', 'success');
+        this.alertService.show('Login realizado com sucesso!', 'success');
         this.router.navigate(['/home']);
       }
     } catch (error: any) {
-      const message = error.error?.message || 'An error occurred during login.';
+      const message = error.error?.message || 'Ocorreu um erro ao realizar o login.';
       this.alertService.show(message, 'error');
     } finally {
       this.loadService.hide();
