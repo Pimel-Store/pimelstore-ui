@@ -29,8 +29,9 @@ export class SalesService {
   }
 
   async deleteSale(id: string): Promise<ApiResponse<{ deletedSaleId: string }>> {
+    const params = new HttpParams().set('id', id);
     return firstValueFrom(
-      this.http.delete<ApiResponse<{ deletedSaleId: string }>>(`${this.baseUrl}/sales/${id}`)
+      this.http.delete<ApiResponse<{ deletedSaleId: string }>>(`${this.baseUrl}/sales`, { params })
     );
   }
 }

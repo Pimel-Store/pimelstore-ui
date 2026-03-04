@@ -23,6 +23,8 @@ export class SalesComponent {
   showModal = signal(false);
   deletingId = signal<string | null>(null);
   currentPage = signal(1);
+  filterInitialDate = signal('');
+  filterFinalDate = signal('');
 
   readonly LIMIT = 10;
 
@@ -47,7 +49,12 @@ export class SalesComponent {
   async loadSales() {
     this.loadService.show();
     try {
-      const res = await this.salesService.getSales({ page: this.currentPage(), limit: this.LIMIT });
+      const res = await this.salesService.getSales({
+        page: this.currentPage(),
+        limit: this.LIMIT,
+        initial_date: this.filterInitialDate() || undefined,
+        final_date: this.filterFinalDate() || undefined
+      });
       this.sales.set(res.data ?? []);
       if (res.pagination) this.pagination.set(res.pagination);
     } catch (error: any) {
@@ -94,6 +101,20 @@ export class SalesComponent {
     } finally {
       this.deletingId.set(null);
     }
+  }
+
+  applyFilter(initial: string, final: string) {
+    this.filterInitialDate.set(initial);
+    this.filterFinalDate.set(final);
+    this.currentPage.set(1);
+    this.loadSales();
+  }
+
+  clearFilter() {
+    this.filterInitialDate.set('');
+    this.filterFinalDate.set('');
+    this.currentPage.set(1);
+    this.loadSales();
   }
 
   async goToPage(page: number) {

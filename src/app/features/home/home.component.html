@@ -7,11 +7,10 @@
       <p class="text-sm text-primary opacity-50 mt-0.5">Visão geral de {{ selectedYear() }}</p>
     </div>
     <select
-      [value]="selectedYear()"
       (change)="onYearSelect($event)"
       class="px-3 py-2 border border-principal rounded-lg text-primary bg-white text-sm outline-none focus:ring-2 focus:ring-[var(--button-primary)] cursor-pointer">
       @for (year of yearOptions; track year) {
-        <option [value]="year">{{ year }}</option>
+        <option [value]="year" [selected]="year === selectedYear()">{{ year }}</option>
       }
     </select>
   </div>
