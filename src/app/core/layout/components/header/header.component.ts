@@ -18,6 +18,7 @@ export class HeaderComponent {
   pwaInstall = inject(PwaInstallService);
 
   isDarkModeActive = signal<boolean>(false);
+  showInstallModal = signal(false);
 
   ngOnInit() {
     this.isDarkModeActive.set(this.themeService.isDarkMode());
@@ -28,8 +29,12 @@ export class HeaderComponent {
     this.isDarkModeActive.set(this.themeService.isDarkMode());
   }
 
-  install() {
-    this.pwaInstall.install();
+  handleInstallClick() {
+    if (this.pwaInstall.canInstall()) {
+      this.pwaInstall.install();
+    } else {
+      this.showInstallModal.set(true);
+    }
   }
 
   logout() {
