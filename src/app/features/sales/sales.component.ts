@@ -25,6 +25,7 @@ export class SalesComponent {
   currentPage = signal(1);
   filterInitialDate = signal('');
   filterFinalDate = signal('');
+  displayValue = signal('');
 
   readonly LIMIT = 10;
 
@@ -79,6 +80,7 @@ export class SalesComponent {
       });
       this.alertService.show('Venda criada com sucesso!', 'success');
       this.form.reset();
+      this.displayValue.set('');
       this.showModal.set(false);
       this.currentPage.set(1);
       await this.loadSales();
@@ -122,13 +124,33 @@ export class SalesComponent {
     await this.loadSales();
   }
 
+  onValueInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const digits = input.value.replace(/\D/g, '');
+
+    if (!digits) {
+      this.displayValue.set('');
+      input.value = '';
+      this.form.get('value')?.setValue(null);
+      return;
+    }
+
+    const number = parseInt(digits, 10) / 100;
+    const formatted = number.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    this.displayValue.set(formatted);
+    input.value = formatted;
+    this.form.get('value')?.setValue(number);
+  }
+
   openModal() {
     this.form.reset();
+    this.displayValue.set('');
     this.showModal.set(true);
   }
 
   closeModal() {
     this.form.reset();
+    this.displayValue.set('');
     this.showModal.set(false);
   }
 
