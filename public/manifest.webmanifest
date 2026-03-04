@@ -1,0 +1,24 @@
+{
+  "name": "PimelStore",
+  "short_name": "PimelStore",
+  "description": "Gestão de vendas PimelStore",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#001433",
+  "theme_color": "#ff7033",
+  "icons": [
+    {
+      "src": "pimelstore.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "pimelstore.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

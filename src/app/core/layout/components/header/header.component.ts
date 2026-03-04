@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../auth/auth-service/auth-service.service';
 import { ThemeService } from '../../../services/theme-service/theme-service.service';
+import { PwaInstallService } from '../../../services/pwa-install/pwa-install.service';
 import { ToggleComponent } from '../../../../lib/components/buttons/toggle/toggle.component';
 
 @Component({
@@ -14,6 +15,7 @@ export class HeaderComponent {
   private themeService = inject(ThemeService);
   private authService = inject(AuthService);
   private router = inject(Router);
+  pwaInstall = inject(PwaInstallService);
 
   isDarkModeActive = signal<boolean>(false);
 
@@ -24,6 +26,10 @@ export class HeaderComponent {
   onToggle(isActive: boolean) {
     this.themeService.toggleTheme();
     this.isDarkModeActive.set(this.themeService.isDarkMode());
+  }
+
+  install() {
+    this.pwaInstall.install();
   }
 
   logout() {
