@@ -1,4 +1,4 @@
-<div class="p-6 flex flex-col gap-4">
+<div class="p-4 md:p-6 flex flex-col gap-4">
 
   <!-- Cabeçalho -->
   <div class="flex items-center justify-between">
@@ -18,40 +18,77 @@
 
   <!-- Filtro de Período -->
   <div class="bg-white rounded-xl shadow p-4 flex flex-wrap items-end gap-3">
-    <div class="flex flex-col gap-1">
-      <label class="text-xs font-semibold text-primary opacity-60">Data inicial</label>
-      <input
-        #initialDate
-        type="date"
-        [value]="filterInitialDate()"
-        class="px-3 py-2 border border-principal rounded-lg text-primary bg-white text-sm outline-none focus:ring-2 focus:ring-[var(--button-primary)] cursor-pointer">
+    <div class="grid grid-cols-2 gap-3 w-full sm:w-auto sm:flex sm:items-end sm:gap-3">
+      <div class="flex flex-col gap-1">
+        <label class="text-xs font-semibold text-primary opacity-60">Data inicial</label>
+        <input
+          #initialDate
+          type="date"
+          [value]="filterInitialDate()"
+          class="px-3 py-2 border border-principal rounded-lg text-primary bg-white text-sm outline-none focus:ring-2 focus:ring-[var(--button-primary)] cursor-pointer">
+      </div>
+      <div class="flex flex-col gap-1">
+        <label class="text-xs font-semibold text-primary opacity-60">Data final</label>
+        <input
+          #finalDate
+          type="date"
+          [value]="filterFinalDate()"
+          class="px-3 py-2 border border-principal rounded-lg text-primary bg-white text-sm outline-none focus:ring-2 focus:ring-[var(--button-primary)] cursor-pointer">
+      </div>
     </div>
-    <div class="flex flex-col gap-1">
-      <label class="text-xs font-semibold text-primary opacity-60">Data final</label>
-      <input
-        #finalDate
-        type="date"
-        [value]="filterFinalDate()"
-        class="px-3 py-2 border border-principal rounded-lg text-primary bg-white text-sm outline-none focus:ring-2 focus:ring-[var(--button-primary)] cursor-pointer">
-    </div>
-    <button
-      (click)="applyFilter(initialDate.value, finalDate.value)"
-      class="flex items-center gap-1 button-primary px-4 py-2 rounded-lg text-sm font-medium cursor-pointer hover:opacity-90 transition-opacity">
-      <span class="material-icons text-base" aria-hidden="true">filter_list</span>
-      Filtrar
-    </button>
-    @if (filterInitialDate() || filterFinalDate()) {
+    <div class="flex gap-2 w-full sm:w-auto">
       <button
-        (click)="clearFilter()"
-        class="flex items-center gap-1 px-4 py-2 rounded-lg border border-principal text-primary text-sm font-medium cursor-pointer hover:bg-primary transition-colors">
-        <span class="material-icons text-base" aria-hidden="true">close</span>
-        Limpar
+        (click)="applyFilter(initialDate.value, finalDate.value)"
+        class="flex-1 sm:flex-none flex items-center justify-center gap-1 button-primary px-4 py-2 rounded-lg text-sm font-medium cursor-pointer hover:opacity-90 transition-opacity">
+        <span class="material-icons text-base" aria-hidden="true">filter_list</span>
+        Filtrar
       </button>
+      @if (filterInitialDate() || filterFinalDate()) {
+        <button
+          (click)="clearFilter()"
+          class="flex-1 sm:flex-none flex items-center justify-center gap-1 px-4 py-2 rounded-lg border border-principal text-primary text-sm font-medium cursor-pointer hover:bg-primary transition-colors">
+          <span class="material-icons text-base" aria-hidden="true">close</span>
+          Limpar
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Cards mobile -->
+  <div class="flex flex-col gap-3 md:hidden">
+    @if (sales().length === 0) {
+      <div class="bg-white rounded-xl shadow p-10 flex flex-col items-center gap-2 text-center">
+        <span class="material-icons text-4xl text-primary opacity-30" aria-hidden="true">receipt_long</span>
+        <p class="text-sm text-primary opacity-40">Nenhuma venda encontrada.</p>
+      </div>
+    }
+    @for (sale of sales(); track sale._id) {
+      <div class="bg-white rounded-xl shadow p-4 flex flex-col gap-2">
+        <div class="flex items-start justify-between gap-2">
+          <span class="font-semibold text-primary text-base leading-snug">{{ sale.product }}</span>
+          <button
+            (click)="deleteSale(sale._id)"
+            [disabled]="deletingId() === sale._id"
+            aria-label="Excluir venda"
+            class="text-[var(--error-color)] hover:opacity-70 disabled:opacity-30 cursor-pointer p-1 rounded transition-opacity shrink-0">
+            @if (deletingId() === sale._id) {
+              <span class="material-icons text-base animate-spin">autorenew</span>
+            } @else {
+              <span class="material-icons text-base">delete_outline</span>
+            }
+          </button>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-primary opacity-60">{{ paymentLabel(sale.payment_method) }}</span>
+          <span class="text-base font-bold text-[var(--success-color)]">{{ formatCurrency(sale.value) }}</span>
+        </div>
+        <span class="text-xs text-primary opacity-40">{{ formatDate(sale.created_at) }}</span>
+      </div>
     }
   </div>
 
-  <!-- Tabela -->
-  <div class="bg-white rounded-xl shadow overflow-hidden">
+  <!-- Tabela desktop -->
+  <div class="hidden md:block bg-white rounded-xl shadow overflow-hidden">
     <table class="w-full text-sm">
       <thead>
         <tr class="bg-primary">
@@ -139,7 +176,6 @@
       class="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6"
       (click)="$event.stopPropagation()">
 
-      <!-- Cabeçalho do Modal -->
       <div class="flex items-center justify-between mb-6">
         <div>
           <h3 class="text-lg font-bold text-primary">Nova Venda</h3>
@@ -155,7 +191,6 @@
 
       <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
 
-        <!-- Produto -->
         <div class="flex flex-col gap-1">
           <label class="text-sm font-semibold text-primary">Produto</label>
           <input
@@ -169,7 +204,6 @@
           }
         </div>
 
-        <!-- Forma de Pagamento -->
         <div class="flex flex-col gap-1">
           <label class="text-sm font-semibold text-primary">Forma de Pagamento</label>
           <select
@@ -185,7 +219,6 @@
           }
         </div>
 
-        <!-- Valor -->
         <div class="flex flex-col gap-1">
           <label class="text-sm font-semibold text-primary">Valor (R$)</label>
           <input
@@ -201,7 +234,6 @@
           }
         </div>
 
-        <!-- Ações -->
         <div class="flex gap-3 pt-2">
           <button
             type="button"

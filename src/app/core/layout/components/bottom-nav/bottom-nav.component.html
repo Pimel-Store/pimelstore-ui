@@ -1,0 +1,14 @@
+<nav class="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-white border-t border-principal shadow-lg">
+  <div class="flex h-16">
+    @for (item of menuItems; track item.route) {
+      <a
+        [routerLink]="['/' + item.route]"
+        class="flex-1 flex flex-col items-center justify-center gap-0.5 transition-colors cursor-pointer"
+        [class.text-[var(--button-primary)]]="'/' + item.route === currentRoute"
+        [class.opacity-50]="'/' + item.route !== currentRoute">
+        <span class="material-icons text-[26px] text-primary">{{ item.icon }}</span>
+        <span class="text-[11px] font-semibold text-primary">{{ item.label }}</span>
+      </a>
+    }
+  </div>
+</nav>

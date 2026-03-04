@@ -1,9 +1,10 @@
 <main class="flex h-screen overflow-hidden">
-  <app-aside></app-aside>
-  <section class="flex-1 overflow-y-auto">
+  <app-aside class="hidden md:block"></app-aside>
+  <section class="flex-1 overflow-y-auto pb-16 md:pb-0">
     <app-header></app-header>
     <section class="p-4 min-h-[calc(100vh-80px)]">
       <router-outlet></router-outlet>
     </section>
   </section>
 </main>
+<app-bottom-nav></app-bottom-nav>
