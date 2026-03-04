@@ -21,7 +21,10 @@ export class SalesComponent {
   sales = signal<Sale[]>([]);
   pagination = signal<Pagination | null>(null);
   showModal = signal(false);
+  modalMode = signal<'create' | 'edit'>('create');
+  editingSaleId = signal<string | null>(null);
   deletingId = signal<string | null>(null);
+  confirmingDeleteId = signal<string | null>(null);
   currentPage = signal(1);
   filterInitialDate = signal('');
   filterFinalDate = signal('');
@@ -40,7 +43,8 @@ export class SalesComponent {
   form = this.fb.group({
     product: ['', [Validators.required, Validators.minLength(2)]],
     payment_method: ['' as PaymentMethod | '', Validators.required],
-    value: [null as number | null, [Validators.required, Validators.min(0.01)]]
+    value: [null as number | null, [Validators.required, Validators.min(0.01)]],
+    sold_at: [this.getNowDateTimeLocal(), Validators.required]
   });
 
   ngOnInit() {
@@ -72,27 +76,46 @@ export class SalesComponent {
     }
     this.loadService.show();
     try {
-      const { product, payment_method, value } = this.form.value;
-      await this.salesService.createSale({
-        product: product!,
-        payment_method: payment_method as PaymentMethod,
-        value: Number(value)
-      });
-      this.alertService.show('Venda criada com sucesso!', 'success');
+      const { product, payment_method, value, sold_at } = this.form.value;
+      if (this.modalMode() === 'edit' && this.editingSaleId()) {
+        await this.salesService.updateSale(this.editingSaleId()!, {
+          product: product!,
+          payment_method: payment_method as PaymentMethod,
+          value: Number(value),
+          sold_at: new Date(sold_at!).toISOString()
+        });
+        this.alertService.show('Venda atualizada com sucesso!', 'success');
+      } else {
+        await this.salesService.createSale({
+          product: product!,
+          payment_method: payment_method as PaymentMethod,
+          value: Number(value),
+          sold_at: new Date(sold_at!).toISOString()
+        });
+        this.alertService.show('Venda criada com sucesso!', 'success');
+        this.currentPage.set(1);
+      }
       this.form.reset();
       this.displayValue.set('');
       this.showModal.set(false);
-      this.currentPage.set(1);
       await this.loadSales();
     } catch (error: any) {
-      this.alertService.show(error?.error?.message || 'Erro ao criar venda.', 'error');
+      this.alertService.show(error?.error?.message || 'Erro ao salvar venda.', 'error');
     } finally {
       this.loadService.hide();
     }
   }
 
+  requestDelete(id: string) {
+    this.confirmingDeleteId.set(id);
+  }
+
+  cancelDelete() {
+    this.confirmingDeleteId.set(null);
+  }
+
   async deleteSale(id: string) {
-    if (!confirm('Tem certeza que deseja excluir esta venda?')) return;
+    this.confirmingDeleteId.set(null);
     this.deletingId.set(id);
     try {
       await this.salesService.deleteSale(id);
@@ -142,15 +165,43 @@ export class SalesComponent {
     this.form.get('value')?.setValue(number);
   }
 
+  private toDateTimeLocal(isoString: string): string {
+    const d = new Date(isoString);
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+
+  private getNowDateTimeLocal(): string {
+    return this.toDateTimeLocal(new Date().toISOString());
+  }
+
   openModal() {
-    this.form.reset();
+    this.modalMode.set('create');
+    this.editingSaleId.set(null);
+    this.form.reset({ sold_at: this.getNowDateTimeLocal() });
     this.displayValue.set('');
+    this.showModal.set(true);
+  }
+
+  openEditModal(sale: Sale) {
+    this.modalMode.set('edit');
+    this.editingSaleId.set(sale._id);
+    const dateStr = sale.sold_at || sale.created_at || new Date().toISOString();
+    const formatted = sale.value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    this.displayValue.set(formatted);
+    this.form.reset({
+      product: sale.product,
+      payment_method: sale.payment_method,
+      value: sale.value,
+      sold_at: this.toDateTimeLocal(dateStr)
+    });
     this.showModal.set(true);
   }
 
   closeModal() {
     this.form.reset();
     this.displayValue.set('');
+    this.editingSaleId.set(null);
     this.showModal.set(false);
   }
 
@@ -170,7 +221,8 @@ export class SalesComponent {
     return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
 
-  formatDate(date?: string): string {
+  formatDate(sale: Sale): string {
+    const date = sale.sold_at || sale.created_at;
     if (!date) return '—';
     return new Date(date).toLocaleDateString('pt-BR');
   }

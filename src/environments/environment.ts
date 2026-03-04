@@ -1,4 +1,8 @@
+// export const environment = {
+//   production: false,
+//   apiUrl: 'https://pimelstore-api-core.vercel.app'
+// };
 export const environment = {
   production: false,
-  apiUrl: 'https://pimelstore-api-core.vercel.app'
+  apiUrl: 'http://localhost:3000'
 };

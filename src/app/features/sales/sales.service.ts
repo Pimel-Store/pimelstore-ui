@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { ApiResponse } from '../../core/interfaces/api';
-import { CreateSale, Sale } from '../../core/interfaces/sale';
+import { CreateSale, Sale, UpdateSale } from '../../core/interfaces/sale';
 
 @Injectable({ providedIn: 'root' })
 export class SalesService {
@@ -25,6 +25,13 @@ export class SalesService {
   async createSale(data: CreateSale): Promise<ApiResponse<Sale>> {
     return firstValueFrom(
       this.http.post<ApiResponse<Sale>>(`${this.baseUrl}/sales`, data)
+    );
+  }
+
+  async updateSale(id: string, data: UpdateSale): Promise<ApiResponse<Sale>> {
+    const params = new HttpParams().set('id', id);
+    return firstValueFrom(
+      this.http.put<ApiResponse<Sale>>(`${this.baseUrl}/sales`, data, { params })
     );
   }
 

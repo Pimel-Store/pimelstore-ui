@@ -6,6 +6,7 @@ export interface Sale {
   product: string;
   payment_method: PaymentMethod;
   value: number;
+  sold_at?: string;
   created_at?: string;
   updated_at?: string;
 }
@@ -14,4 +15,12 @@ export interface CreateSale {
   product: string;
   payment_method: PaymentMethod;
   value: number;
+  sold_at: string;
+}
+
+export interface UpdateSale {
+  product?: string;
+  payment_method?: PaymentMethod;
+  value?: number;
+  sold_at?: string;
 }
