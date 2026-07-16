@@ -4,6 +4,7 @@ import { AuthService } from '../../../auth/auth-service/auth-service.service';
 import { ThemeService } from '../../../services/theme-service/theme-service.service';
 import { PwaInstallService } from '../../../services/pwa-install/pwa-install.service';
 import { ToggleComponent } from '../../../../lib/components/buttons/toggle/toggle.component';
+import { RevenueVisibilityService } from '../../../services/revenue-visibility/revenue-visibility.service';
 
 @Component({
   selector: 'app-header',
@@ -16,9 +17,11 @@ export class HeaderComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
   pwaInstall = inject(PwaInstallService);
+  private revenueVisibility = inject(RevenueVisibilityService);
 
   isDarkModeActive = signal<boolean>(false);
   showInstallModal = signal(false);
+  revenueHidden = this.revenueVisibility.hidden;
 
   ngOnInit() {
     this.isDarkModeActive.set(this.themeService.isDarkMode());
@@ -27,6 +30,10 @@ export class HeaderComponent {
   onToggle(isActive: boolean) {
     this.themeService.toggleTheme();
     this.isDarkModeActive.set(this.themeService.isDarkMode());
+  }
+
+  toggleRevenueVisibility() {
+    this.revenueVisibility.toggle();
   }
 
   handleInstallClick() {

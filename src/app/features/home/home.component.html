@@ -38,7 +38,11 @@
             <span class="material-icons text-base text-primary" aria-hidden="true">attach_money</span>
           </div>
         </div>
-        <p class="text-4xl font-bold text-[var(--success-color)]">{{ formatCurrency(dashboard()!.annual.totalValue) }}</p>
+        <p
+          class="text-4xl font-bold text-[var(--success-color)]"
+          [class.blur-md]="revenueHidden()"
+          [class.select-none]="revenueHidden()"
+        >{{ formatCurrency(dashboard()!.annual.totalValue) }}</p>
         <p class="text-xs text-primary opacity-40">faturado no ano</p>
       </div>
 
@@ -62,7 +66,7 @@
                 <div class="bg-[var(--bg-loading)] text-white text-xs rounded-lg px-2 py-1.5 whitespace-nowrap shadow-lg">
                   <p class="font-semibold">{{ MONTH_NAMES[month.month - 1] }}</p>
                   <p>{{ month.totalItems }} vendas</p>
-                  <p>{{ formatCurrency(month.totalValue) }}</p>
+                  <p [class.blur-sm]="revenueHidden()" [class.select-none]="revenueHidden()">{{ formatCurrency(month.totalValue) }}</p>
                 </div>
                 <div class="w-2 h-2 bg-[var(--bg-loading)] rotate-45 -mt-1"></div>
               </div>
@@ -89,7 +93,8 @@
               <div class="flex items-center gap-2">
                 <div class="w-2.5 h-2.5 rounded-sm bg-[var(--button-primary)]"></div>
                 <span class="text-xs text-primary opacity-70">
-                  {{ MONTH_NAMES[month.month - 1] }} · {{ month.totalItems }} · {{ formatCurrency(month.totalValue) }}
+                  {{ MONTH_NAMES[month.month - 1] }} · {{ month.totalItems }} ·
+                  <span [class.blur-sm]="revenueHidden()" [class.select-none]="revenueHidden()">{{ formatCurrency(month.totalValue) }}</span>
                 </span>
               </div>
             }
@@ -117,8 +122,16 @@
                 <tr class="border-b border-principal last:border-0 hover:bg-primary transition-colors">
                   <td class="py-3 text-primary font-medium">{{ formatDayDate(day) }}</td>
                   <td class="py-3 text-right text-primary opacity-80">{{ day.totalItems }}</td>
-                  <td class="py-3 text-right font-semibold text-[var(--success-color)]">{{ formatCurrency(day.totalValue) }}</td>
-                  <td class="py-3 text-right text-primary opacity-60">{{ formatCurrency(day.totalValue / day.totalItems) }}</td>
+                  <td
+                    class="py-3 text-right font-semibold text-[var(--success-color)]"
+                    [class.blur-sm]="revenueHidden()"
+                    [class.select-none]="revenueHidden()"
+                  >{{ formatCurrency(day.totalValue) }}</td>
+                  <td
+                    class="py-3 text-right text-primary opacity-60"
+                    [class.blur-sm]="revenueHidden()"
+                    [class.select-none]="revenueHidden()"
+                  >{{ formatCurrency(day.totalValue / day.totalItems) }}</td>
                 </tr>
               }
             </tbody>

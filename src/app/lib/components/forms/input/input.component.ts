@@ -21,6 +21,16 @@ export class InputTextComponent {
   @Input() id = '';
 
   value: string = '';
+  passwordVisible = false;
+
+  get inputType(): string {
+    if (this.type !== 'password') return this.type;
+    return this.passwordVisible ? 'text' : 'password';
+  }
+
+  togglePasswordVisibility(): void {
+    this.passwordVisible = !this.passwordVisible;
+  }
 
   onChange: (value: string) => void = () => {};
   onTouched: () => void = () => {};

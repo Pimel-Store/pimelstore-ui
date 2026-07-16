@@ -2,14 +2,24 @@
   @if (label) {
     <label [for]="id" class="block text-sm font-medium text-primary mb-1">{{ label }}</label>
   }
-  <input
-    class="text-primary w-full p-2 border border-principal rounded-md bg-white focus:focus-primary outline-primary"
-    [id]="id"
-    [type]="type"
-    [placeholder]="placeholder"
-    [value]="value"
-    (input)="handleInput($event)"
-    (blur)="onTouched()"
-  />
+  <div class="relative">
+    <input
+      class="text-primary w-full p-2 border border-principal rounded-md bg-white focus:focus-primary outline-primary"
+      [class.pr-10]="type === 'password'"
+      [id]="id"
+      [type]="inputType"
+      [placeholder]="placeholder"
+      [value]="value"
+      (input)="handleInput($event)"
+      (blur)="onTouched()"
+    />
+    @if (type === 'password') {
+      <button
+        type="button"
+        (click)="togglePasswordVisibility()"
+        class="absolute right-2 top-1/2 -translate-y-1/2 text-primary material-icons cursor-pointer select-none"
+      >{{ passwordVisible ? 'visibility_off' : 'visibility' }}</button>
+    }
+  </div>
   <ng-content></ng-content>
 </div>

@@ -3,6 +3,7 @@ import { AlertService } from '../../lib/components/alerts/system-alert/system-al
 import { LoadService } from '../../lib/components/load/system-load/system-load.service';
 import { DashboardData, DailyData, MonthData } from '../../core/interfaces/dashboard';
 import { DashboardService } from './dashboard.service';
+import { RevenueVisibilityService } from '../../core/services/revenue-visibility/revenue-visibility.service';
 
 @Component({
   selector: 'app-home',
@@ -14,9 +15,11 @@ export class HomeComponent {
   private dashboardService = inject(DashboardService);
   private alertService = inject(AlertService);
   private loadService = inject(LoadService);
+  private revenueVisibility = inject(RevenueVisibilityService);
 
   dashboard = signal<DashboardData | null>(null);
   selectedYear = signal(new Date().getFullYear());
+  revenueHidden = this.revenueVisibility.hidden;
 
   readonly MONTH_NAMES = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
