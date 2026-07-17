@@ -1,8 +1,8 @@
 import { Directive, ElementRef, HostListener, Renderer2, inject } from '@angular/core';
 import { PullToRefreshService } from '../../../../core/services/pull-to-refresh/pull-to-refresh.service';
 
-const TRIGGER_DISTANCE = 70;
-const MAX_PULL_DISTANCE = 110;
+const TRIGGER_DISTANCE = 130;
+const MAX_PULL_DISTANCE = 170;
 
 @Directive({
   selector: '[appPullToRefresh]',
