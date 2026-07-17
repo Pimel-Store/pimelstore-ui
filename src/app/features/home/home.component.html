@@ -128,33 +128,33 @@
       <div class="bg-white rounded-xl shadow p-5">
         <h3 class="text-sm font-semibold text-primary uppercase tracking-wider opacity-60 mb-4">Atividade Diária Recente</h3>
         <div class="overflow-x-auto">
-          <table class="w-full text-sm">
+          <table class="w-full min-w-[640px] text-sm">
             <thead>
               <tr class="border-b border-principal">
-                <th class="text-left pb-3 font-semibold text-primary opacity-60">Data</th>
-                <th class="text-right pb-3 font-semibold text-primary opacity-60">Vendas</th>
-                <th class="text-right pb-3 font-semibold text-primary opacity-60">Receita Bruta</th>
-                <th class="text-right pb-3 font-semibold text-primary opacity-60">Despesas</th>
-                <th class="text-right pb-3 font-semibold text-primary opacity-60">Receita Líquida</th>
+                <th class="text-left pb-3 pr-4 font-semibold text-primary opacity-60 whitespace-nowrap">Data</th>
+                <th class="text-right pb-3 px-4 font-semibold text-primary opacity-60 whitespace-nowrap">Vendas</th>
+                <th class="text-right pb-3 px-4 font-semibold text-primary opacity-60 whitespace-nowrap">Receita Bruta</th>
+                <th class="text-right pb-3 px-4 font-semibold text-primary opacity-60 whitespace-nowrap">Despesas</th>
+                <th class="text-right pb-3 pl-4 font-semibold text-primary opacity-60 whitespace-nowrap">Receita Líquida</th>
               </tr>
             </thead>
             <tbody>
               @for (day of recentDays; track day.day + '-' + day.month + '-' + day.year) {
                 <tr class="border-b border-principal last:border-0 hover:bg-primary transition-colors">
-                  <td class="py-3 text-primary font-medium">{{ formatDayDate(day) }}</td>
-                  <td class="py-3 text-right text-primary opacity-80">{{ day.totalItems }}</td>
+                  <td class="py-3 pr-4 text-primary font-medium whitespace-nowrap">{{ formatDayDate(day) }}</td>
+                  <td class="py-3 px-4 text-right text-primary opacity-80 whitespace-nowrap">{{ day.totalItems }}</td>
                   <td
-                    class="py-3 text-right font-semibold text-[var(--success-color)]"
+                    class="py-3 px-4 text-right font-semibold text-[var(--success-color)] whitespace-nowrap"
                     [class.blur-sm]="revenueHidden()"
                     [class.select-none]="revenueHidden()"
                   >{{ formatCurrency(day.totalValue) }}</td>
                   <td
-                    class="py-3 text-right font-semibold text-[var(--error-color)]"
+                    class="py-3 px-4 text-right font-semibold text-[var(--error-color)] whitespace-nowrap"
                     [class.blur-sm]="revenueHidden()"
                     [class.select-none]="revenueHidden()"
                   >{{ formatCurrency(day.totalExpenses) }}</td>
                   <td
-                    class="py-3 text-right font-semibold text-primary"
+                    class="py-3 pl-4 text-right font-semibold text-primary whitespace-nowrap"
                     [class.blur-sm]="revenueHidden()"
                     [class.select-none]="revenueHidden()"
                   >{{ formatCurrency(day.netValue) }}</td>
