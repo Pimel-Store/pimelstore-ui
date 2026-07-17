@@ -16,7 +16,8 @@ export class BottomNavComponent {
 
   menuItems = [
     { label: 'Dashboard', route: 'home', icon: 'home' },
-    { label: 'Vendas', route: 'sales', icon: 'shopping_cart' }
+    { label: 'Vendas', route: 'sales', icon: 'shopping_cart' },
+    { label: 'Despesas', route: 'expenses', icon: 'payments' }
   ];
 
   ngOnInit(): void {

@@ -12,6 +12,7 @@ export const routes: Routes = [
     children: [
         { path: 'home', loadChildren: () => import('./features/home/home.routes') },
         { path: 'sales', loadChildren: () => import('./features/sales/sales.routes') },
+        { path: 'expenses', loadChildren: () => import('./features/expenses/expenses.routes') },
     ]
   },
   { path: 'login', component: LayoutNoAuthComponent, loadChildren: () => import('./features/login/login.routes') }

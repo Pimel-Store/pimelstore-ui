@@ -5,10 +5,11 @@ import { ThemeService } from '../../../services/theme-service/theme-service.serv
 import { PwaInstallService } from '../../../services/pwa-install/pwa-install.service';
 import { ToggleComponent } from '../../../../lib/components/buttons/toggle/toggle.component';
 import { RevenueVisibilityService } from '../../../services/revenue-visibility/revenue-visibility.service';
+import { SettingsComponent } from '../settings/settings.component';
 
 @Component({
   selector: 'app-header',
-  imports: [ToggleComponent],
+  imports: [ToggleComponent, SettingsComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -21,6 +22,7 @@ export class HeaderComponent {
 
   isDarkModeActive = signal<boolean>(false);
   showInstallModal = signal(false);
+  showSettingsModal = signal(false);
   revenueHidden = this.revenueVisibility.hidden;
 
   ngOnInit() {

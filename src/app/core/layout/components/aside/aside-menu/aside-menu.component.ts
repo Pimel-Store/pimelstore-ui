@@ -18,7 +18,8 @@ export class AsideMenuComponent {
 
   menuItems: MenuItem[] = [
     { label: 'Dashboard', route: 'home', icon: 'home' },
-    { label: 'Vendas', route: 'sales', icon: 'shopping_cart' }
+    { label: 'Vendas', route: 'sales', icon: 'shopping_cart' },
+    { label: 'Despesas', route: 'expenses', icon: 'payments' }
   ];
 
   ngOnInit(): void {

@@ -22,6 +22,13 @@
         [isActive]="isDarkModeActive"
         (valueChange)="onToggle($event)">
       </app-toggle>
+      <button
+        (click)="showSettingsModal.set(true)"
+        title="Configurações"
+        class="flex items-center gap-1 text-primary hover:opacity-70 cursor-pointer">
+        <span class="material-icons" aria-hidden="true">settings</span>
+        <span class="text-sm font-medium hidden sm:inline">Configurações</span>
+      </button>
       <button (click)="logout()" class="flex items-center gap-1 text-primary hover:opacity-70 cursor-pointer">
         <span class="material-icons" aria-hidden="true">logout</span>
         <span class="text-sm font-medium hidden sm:inline">Sair</span>
@@ -29,6 +36,8 @@
     </div>
   </div>
 </nav>
+
+<app-settings [open]="showSettingsModal()" (closed)="showSettingsModal.set(false)"></app-settings>
 
 @if (showInstallModal()) {
   <div

@@ -1,18 +1,36 @@
 <div class="p-4 md:p-6 flex flex-col gap-4 md:gap-6">
 
   <!-- Cabeçalho + Seletor de Ano -->
-  <div class="flex items-center justify-between">
+  <div class="flex items-center justify-between flex-wrap gap-3">
     <div>
       <h2 class="text-2xl font-bold text-primary">Dashboard</h2>
       <p class="text-sm text-primary opacity-50 mt-0.5">Visão geral de {{ selectedYear() }}</p>
     </div>
-    <select
-      (change)="onYearSelect($event)"
-      class="px-3 py-2 border border-principal rounded-lg text-primary bg-white text-sm outline-none focus:ring-2 focus:ring-[var(--button-primary)] cursor-pointer">
-      @for (year of yearOptions; track year) {
-        <option [value]="year" [selected]="year === selectedYear()">{{ year }}</option>
-      }
-    </select>
+    <div class="flex items-center gap-3">
+      <div class="flex items-center bg-primary rounded-lg p-1 text-sm font-medium">
+        <button
+          type="button"
+          (click)="setViewMode('gross')"
+          [class.button-primary]="viewMode() === 'gross'"
+          class="px-3 py-1.5 rounded-md text-primary cursor-pointer transition-colors">
+          Bruto
+        </button>
+        <button
+          type="button"
+          (click)="setViewMode('net')"
+          [class.button-primary]="viewMode() === 'net'"
+          class="px-3 py-1.5 rounded-md text-primary cursor-pointer transition-colors">
+          Líquido
+        </button>
+      </div>
+      <select
+        (change)="onYearSelect($event)"
+        class="px-3 py-2 border border-principal rounded-lg text-primary bg-white text-sm outline-none focus:ring-2 focus:ring-[var(--button-primary)] cursor-pointer">
+        @for (year of yearOptions; track year) {
+          <option [value]="year" [selected]="year === selectedYear()">{{ year }}</option>
+        }
+      </select>
+    </div>
   </div>
 
   @if (dashboard()) {
@@ -33,7 +51,7 @@
 
       <div class="bg-white rounded-xl shadow p-5 flex flex-col gap-2">
         <div class="flex items-center justify-between">
-          <span class="text-sm font-medium text-primary opacity-60">Receita Total</span>
+          <span class="text-sm font-medium text-primary opacity-60">{{ viewMode() === 'net' ? 'Receita Líquida' : 'Receita Bruta' }}</span>
           <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center">
             <span class="material-icons text-base text-primary" aria-hidden="true">attach_money</span>
           </div>
@@ -42,8 +60,10 @@
           class="text-4xl font-bold text-[var(--success-color)]"
           [class.blur-md]="revenueHidden()"
           [class.select-none]="revenueHidden()"
-        >{{ formatCurrency(dashboard()!.annual.totalValue) }}</p>
-        <p class="text-xs text-primary opacity-40">faturado no ano</p>
+        >{{ formatCurrency(valueFor(dashboard()!.annual)) }}</p>
+        <p class="text-xs text-primary opacity-40">
+          {{ viewMode() === 'net' ? 'faturado no ano, descontando despesas de ' + formatCurrency(dashboard()!.annual.totalExpenses) : 'faturado no ano' }}
+        </p>
       </div>
 
     </div>
@@ -66,7 +86,7 @@
                 <div class="bg-[var(--bg-loading)] text-white text-xs rounded-lg px-2 py-1.5 whitespace-nowrap shadow-lg">
                   <p class="font-semibold">{{ MONTH_NAMES[month.month - 1] }}</p>
                   <p>{{ month.totalItems }} vendas</p>
-                  <p [class.blur-sm]="revenueHidden()" [class.select-none]="revenueHidden()">{{ formatCurrency(month.totalValue) }}</p>
+                  <p [class.blur-sm]="revenueHidden()" [class.select-none]="revenueHidden()">{{ formatCurrency(valueFor(month)) }}</p>
                 </div>
                 <div class="w-2 h-2 bg-[var(--bg-loading)] rotate-45 -mt-1"></div>
               </div>
@@ -94,7 +114,7 @@
                 <div class="w-2.5 h-2.5 rounded-sm bg-[var(--button-primary)]"></div>
                 <span class="text-xs text-primary opacity-70">
                   {{ MONTH_NAMES[month.month - 1] }} · {{ month.totalItems }} ·
-                  <span [class.blur-sm]="revenueHidden()" [class.select-none]="revenueHidden()">{{ formatCurrency(month.totalValue) }}</span>
+                  <span [class.blur-sm]="revenueHidden()" [class.select-none]="revenueHidden()">{{ formatCurrency(valueFor(month)) }}</span>
                 </span>
               </div>
             }
@@ -113,8 +133,9 @@
               <tr class="border-b border-principal">
                 <th class="text-left pb-3 font-semibold text-primary opacity-60">Data</th>
                 <th class="text-right pb-3 font-semibold text-primary opacity-60">Vendas</th>
-                <th class="text-right pb-3 font-semibold text-primary opacity-60">Receita</th>
-                <th class="text-right pb-3 font-semibold text-primary opacity-60">Ticket Médio</th>
+                <th class="text-right pb-3 font-semibold text-primary opacity-60">Receita Bruta</th>
+                <th class="text-right pb-3 font-semibold text-primary opacity-60">Despesas</th>
+                <th class="text-right pb-3 font-semibold text-primary opacity-60">Receita Líquida</th>
               </tr>
             </thead>
             <tbody>
@@ -128,10 +149,15 @@
                     [class.select-none]="revenueHidden()"
                   >{{ formatCurrency(day.totalValue) }}</td>
                   <td
-                    class="py-3 text-right text-primary opacity-60"
+                    class="py-3 text-right font-semibold text-[var(--error-color)]"
                     [class.blur-sm]="revenueHidden()"
                     [class.select-none]="revenueHidden()"
-                  >{{ formatCurrency(day.totalValue / day.totalItems) }}</td>
+                  >{{ formatCurrency(day.totalExpenses) }}</td>
+                  <td
+                    class="py-3 text-right font-semibold text-primary"
+                    [class.blur-sm]="revenueHidden()"
+                    [class.select-none]="revenueHidden()"
+                  >{{ formatCurrency(day.netValue) }}</td>
                 </tr>
               }
             </tbody>

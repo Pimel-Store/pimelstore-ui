@@ -17,8 +17,11 @@ export class HomeComponent {
   private loadService = inject(LoadService);
   private revenueVisibility = inject(RevenueVisibilityService);
 
+  private readonly viewModeKey = 'dashboard-view-mode';
+
   dashboard = signal<DashboardData | null>(null);
   selectedYear = signal(new Date().getFullYear());
+  viewMode = signal<'gross' | 'net'>(this.getStoredViewMode());
   revenueHidden = this.revenueVisibility.hidden;
 
   readonly MONTH_NAMES = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
@@ -32,12 +35,12 @@ export class HomeComponent {
     const data = this.dashboard()?.monthly ?? {};
     return Array.from({ length: 12 }, (_, i) => {
       const month = i + 1;
-      return data[month.toString()] ?? { totalItems: 0, totalValue: 0, month, year: this.selectedYear() };
+      return data[month.toString()] ?? { totalItems: 0, totalValue: 0, totalExpenses: 0, netValue: 0, month, year: this.selectedYear() };
     });
   }
 
   get maxMonthValue(): number {
-    return Math.max(...this.monthList.map(m => m.totalValue), 1);
+    return Math.max(...this.monthList.map(m => this.valueFor(m)), 1);
   }
 
   get recentDays(): DailyData[] {
@@ -66,13 +69,27 @@ export class HomeComponent {
     this.loadDashboard();
   }
 
-  barHeight(month: MonthData): number {
-    if (this.maxMonthValue === 0) return 0;
-    return Math.max((month.totalValue / this.maxMonthValue) * 100, month.totalValue > 0 ? 5 : 0);
+  setViewMode(mode: 'gross' | 'net') {
+    this.viewMode.set(mode);
+    localStorage.setItem(this.viewModeKey, mode);
   }
 
-  formatCurrency(value: number): string {
-    return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  private getStoredViewMode(): 'gross' | 'net' {
+    return localStorage.getItem(this.viewModeKey) === 'net' ? 'net' : 'gross';
+  }
+
+  valueFor(entry: { totalValue: number; netValue?: number }): number {
+    return (this.viewMode() === 'net' ? entry.netValue : entry.totalValue) ?? 0;
+  }
+
+  barHeight(month: MonthData): number {
+    if (this.maxMonthValue === 0) return 0;
+    const value = this.valueFor(month);
+    return Math.max((value / this.maxMonthValue) * 100, value > 0 ? 5 : 0);
+  }
+
+  formatCurrency(value: number | undefined): string {
+    return (value ?? 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
 
   formatDayDate(d: DailyData): string {
