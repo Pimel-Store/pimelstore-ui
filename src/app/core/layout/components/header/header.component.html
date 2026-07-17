@@ -41,10 +41,10 @@
 
 @if (showInstallModal()) {
   <div
-    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+    class="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/50"
     (click)="showInstallModal.set(false)">
     <div
-      class="bg-white rounded-xl shadow-xl p-6 mx-4 max-w-sm w-full"
+      class="bg-white rounded-xl shadow-xl p-6 mx-4 my-8 max-w-sm w-full"
       (click)="$event.stopPropagation()">
       <div class="flex items-center justify-between mb-4">
         <h2 class="text-lg font-bold text-gray-800">Instalar como App</h2>
