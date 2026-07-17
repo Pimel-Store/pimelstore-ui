@@ -8,6 +8,7 @@ import { Expense } from '../../core/interfaces/expense';
 import { Category } from '../../core/interfaces/category';
 import { CategoriesService } from '../../core/services/categories/categories.service';
 import { ExpensesService } from './expenses.service';
+import { PullToRefreshService } from '../../core/services/pull-to-refresh/pull-to-refresh.service';
 
 @Component({
   selector: 'app-expenses',
@@ -21,6 +22,10 @@ export class ExpensesComponent {
   private alertService = inject(AlertService);
   private loadService = inject(LoadService);
   private fb = inject(FormBuilder);
+  private pullToRefresh = inject(PullToRefreshService);
+  private refreshHandler = async () => {
+    await Promise.all([this.loadExpenses(), this.loadCategories()]);
+  };
 
   expenses = signal<Expense[]>([]);
   categories = this.categoriesService.categories;
@@ -56,6 +61,11 @@ export class ExpensesComponent {
   ngOnInit() {
     this.loadExpenses();
     this.loadCategories();
+    this.pullToRefresh.register(this.refreshHandler);
+  }
+
+  ngOnDestroy() {
+    this.pullToRefresh.unregister(this.refreshHandler);
   }
 
   async loadCategories() {

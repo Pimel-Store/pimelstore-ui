@@ -5,6 +5,7 @@ import { LoadService } from '../../lib/components/load/system-load/system-load.s
 import { Pagination } from '../../core/interfaces/api';
 import { PaymentMethod, Sale } from '../../core/interfaces/sale';
 import { SalesService } from './sales.service';
+import { PullToRefreshService } from '../../core/services/pull-to-refresh/pull-to-refresh.service';
 
 @Component({
   selector: 'app-sales',
@@ -17,6 +18,8 @@ export class SalesComponent {
   private alertService = inject(AlertService);
   private loadService = inject(LoadService);
   private fb = inject(FormBuilder);
+  private pullToRefresh = inject(PullToRefreshService);
+  private refreshHandler = () => this.loadSales();
 
   sales = signal<Sale[]>([]);
   pagination = signal<Pagination | null>(null);
@@ -49,6 +52,11 @@ export class SalesComponent {
 
   ngOnInit() {
     this.loadSales();
+    this.pullToRefresh.register(this.refreshHandler);
+  }
+
+  ngOnDestroy() {
+    this.pullToRefresh.unregister(this.refreshHandler);
   }
 
   async loadSales() {

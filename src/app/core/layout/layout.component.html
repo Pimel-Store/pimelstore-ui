@@ -1,6 +1,6 @@
 <main class="flex h-screen overflow-hidden">
   <app-aside class="hidden md:block"></app-aside>
-  <section class="flex-1 overflow-y-auto pb-16 md:pb-0">
+  <section class="flex-1 overflow-y-auto pb-16 md:pb-0" appPullToRefresh>
     <app-header></app-header>
     <section class="p-4 min-h-[calc(100vh-80px)]">
       <router-outlet></router-outlet>

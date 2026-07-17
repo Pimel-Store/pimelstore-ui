@@ -4,6 +4,7 @@ import { LoadService } from '../../lib/components/load/system-load/system-load.s
 import { DashboardData, DailyData, MonthData } from '../../core/interfaces/dashboard';
 import { DashboardService } from './dashboard.service';
 import { RevenueVisibilityService } from '../../core/services/revenue-visibility/revenue-visibility.service';
+import { PullToRefreshService } from '../../core/services/pull-to-refresh/pull-to-refresh.service';
 
 @Component({
   selector: 'app-home',
@@ -16,6 +17,8 @@ export class HomeComponent {
   private alertService = inject(AlertService);
   private loadService = inject(LoadService);
   private revenueVisibility = inject(RevenueVisibilityService);
+  private pullToRefresh = inject(PullToRefreshService);
+  private refreshHandler = () => this.loadDashboard();
 
   private readonly viewModeKey = 'dashboard-view-mode';
 
@@ -49,6 +52,11 @@ export class HomeComponent {
 
   ngOnInit() {
     this.loadDashboard();
+    this.pullToRefresh.register(this.refreshHandler);
+  }
+
+  ngOnDestroy() {
+    this.pullToRefresh.unregister(this.refreshHandler);
   }
 
   async loadDashboard() {
