@@ -9,6 +9,7 @@ import { Category } from '../../core/interfaces/category';
 import { CategoriesService } from '../../core/services/categories/categories.service';
 import { ExpensesService } from './expenses.service';
 import { PullToRefreshService } from '../../core/services/pull-to-refresh/pull-to-refresh.service';
+import { contrastTextColor } from '../../lib/utils/color-contrast';
 
 @Component({
   selector: 'app-expenses',
@@ -244,6 +245,8 @@ export class ExpensesComponent {
   categoryOf(categoryId: string): Category | undefined {
     return this.categories().find(c => c._id === categoryId);
   }
+
+  contrastTextColor = contrastTextColor;
 
   paymentLabel(method: PaymentMethod): string {
     return this.paymentMethods.find(p => p.value === method)?.label ?? method;

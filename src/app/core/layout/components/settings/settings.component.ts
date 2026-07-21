@@ -4,6 +4,7 @@ import { AlertService } from '../../../../lib/components/alerts/system-alert/sys
 import { LoadService } from '../../../../lib/components/load/system-load/system-load.service';
 import { Category } from '../../../interfaces/category';
 import { CategoriesService } from '../../../services/categories/categories.service';
+import { contrastTextColor } from '../../../../lib/utils/color-contrast';
 
 @Component({
   selector: 'app-settings',
@@ -26,6 +27,8 @@ export class SettingsComponent {
   deletingId = signal<string | null>(null);
 
   readonly DEFAULT_COLOR = '#6366F1';
+
+  contrastTextColor = contrastTextColor;
 
   form = this.fb.group({
     title: ['', [Validators.required, Validators.minLength(2)]],
